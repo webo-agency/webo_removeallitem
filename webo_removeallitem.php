@@ -4,8 +4,17 @@ if(!defined('_PS_VERSION_')){
     exit;
 }
 
+$autoloadPath = __DIR__ . '/vendor/autoload.php';
+if (file_exists($autoloadPath)) {
+    require_once $autoloadPath;
+}
+
+use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
+use Prestashop\Module\WeboRemoveallitem\Controller\cardInformationController;
+
 class webo_RemoveAllItem extends Module implements WidgetInterface
 {
+
     public function __construct()
     {
         $this->name = "webo_removeallitem";
@@ -29,7 +38,7 @@ class webo_RemoveAllItem extends Module implements WidgetInterface
         return false;
     }
 
-    public function uninstall()
+    public function uninstall() : bool
     {
         if(parent::uninstall()) {
             return true;
@@ -38,15 +47,15 @@ class webo_RemoveAllItem extends Module implements WidgetInterface
         return false;
     }
 
-    public function renderWidget($hookName, $configuration)
+    public function renderWidget($hookName, array $configuration)
     {
         $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
         try {
-            return $this->fetch('module:'. $this->name.'views/templates/front/cardDeleteButton.tpl');
+            return $this->fetch('module:'. $this->name.'/views/templates/front/cardDeleteButton.tpl');
         } catch (Exception $e) {
             if(strpos($e->getMessage(), 'cardDeleteButton.tpl')!== false)
             {
-
+                return $this->fetch('module:'. $this->name.'/views/templates/front/cardDeleteButton.tpl');
             }
             return false;
         }
@@ -55,7 +64,7 @@ class webo_RemoveAllItem extends Module implements WidgetInterface
     public function getWidgetVariables($hookName, array $configuration)
     {
         return [
-            'cardinformation' => ''
+            'cart_id' => $this->context->cookie->id_cart
         ];
     }
 }
