@@ -44,26 +44,22 @@ class webo_RemoveAllItem extends Module implements WidgetInterface
 
     public function renderWidget($hookName, array $configuration)
     {
-//        die(print_r($_SESSION["_sf2_attributes"]["_security_main"]));
-        $context = Context::getContext();
-        echo '<pre>',print_r($context->cart, true).'</pre>';
-//        $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
-//        try {
-//            return $this->fetch('module:'. $this->name.'/views/templates/front/cardDeleteButton.tpl');
-//        } catch (Exception $e) {
-//            if(strpos($e->getMessage(), 'cardDeleteButton.tpl')!== false)
-//            {
-//                return $this->fetch('module:'. $this->name.'/views/templates/front/cardDeleteButton.tpl');
-//            }
-//            return false;
-//        }
+        $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
+        try {
+            return $this->fetch('module:'. $this->name.'/views/templates/front/cardDeleteButton.tpl');
+        } catch (Exception $e) {
+            if(strpos($e->getMessage(), 'cardDeleteButton.tpl')!== false)
+            {
+                return $this->fetch('module:'. $this->name.'/views/templates/front/cardDeleteButton.tpl');
+            }
+            return false;
+        }
     }
 
     public function getWidgetVariables($hookName, array $configuration)
     {
         return [
-            'cart_id' => $this->context->cookie->__get('products_count'),
-            'abc' => $_COOKIE
+            'cart_id' => $this->context->cookie->id_cart,
         ];
     }
 }

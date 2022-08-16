@@ -5,7 +5,7 @@ services:
     image: prestashop/prestashop:1.7.8.6-apache
     ports:
       - 8007:80
-      - 9003:9000
+      - 9004:9000
     depends_on:
       - mariadb-remove
     volumes:

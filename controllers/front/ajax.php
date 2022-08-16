@@ -15,9 +15,9 @@ class webo_removeallitemAjaxModuleFrontController extends ModuleFrontController
 
     public function deleteAllItem(array $variable)
     {
-        $result = DB::getInstance()->delete("cart_product", 'id_cart = '.(string)Tools::getValue("cartid").'');
-        if($result)
+        if(DB::getInstance()->delete("cart_product", 'id_cart = '.(string)Tools::getValue("cartid").''))
         {
+            Hook::exec('actionObjectProductInCartDeleteAfter');
             echo ($this->ajaxRender(json_encode([
                 'success' => true,
                 'code' => '200',
